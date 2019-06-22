@@ -1,5 +1,10 @@
 from app import app
 from flask import render_template,request,redirect, session, Flask, url_for, escape
+import psycopg2
+conn = psycopg2.connect("dbname=%s user=%s password=%s" %
+                        ('anakena', 'alonsogjp', 'Alon'))
+
+cur = conn.cursor()
 
 
 
@@ -49,8 +54,14 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 @app.route('/index.html')
 def index():
     if 'username' in session:
+
         print(session)
-        return render_template("prueba1.html")
+        sql="""select decreto from fichas group by(decreto);"""
+        cur.execute(sql)
+        data=cur.fetchall()
+        print(data[0], data[1])
+        return render_template("index.html")
+
     return 'You are not logged in'
 
 

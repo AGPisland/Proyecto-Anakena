@@ -4,8 +4,8 @@
 <head>
     <title>Escuela Especial Anakena La Florida Santiago</title>
     <meta charset="utf-8" />
-    
-    
+
+
 
     <link rel="stylesheet" href="/static/css/style.css?16-3-1-1" media="screen,print" />
     <link rel="stylesheet" href="/static/css/template.css?16-3-1-1" media="screen" />
@@ -18,7 +18,9 @@
     <div id="imPageExtContainer">
         <div id="imPageIntContainer">
             <div id="imHeaderBg"></div>
-            <div id="imFooterBg"></div>
+            <div id="imFooterBg">
+
+            </div>
             <div id="imPage">
                 <header id="imHeader">
                     <h1 class="imHidden">Escuela Especial Anakena La Florida Santiago</h1>
@@ -40,61 +42,7 @@
                             </div>
                         </div>
 
-                        <div id="imHeader_imMenuObject_04_wrapper" class="template-object-wrapper">
 
-                            <div id="imHeader_imCell_4" class="">
-                                
-                                    <div id="imHeader_imMenuObject_04">
-
-
-                                        <ul class="menu-mobile-animated hidden">
-
-                                            <li class="imMnMnFirst imPage" >
-                                                <div class="label-wrapper">
-                                                    <div class="label-inner-wrapper">
-                                                        <a class="label" href="index.html">
-                                                            DECRETO 1 </a>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="imMnMnMiddle imPage">
-                                                <div class="label-wrapper">
-                                                    <div class="label-inner-wrapper">
-                                                        <a class="label" href="index.html">
-                                                            DECRETO 2 </a>
-                                                    </div>
-                                                </div>  
-                                            </li>
-
-                                        </ul>
-
-                                    </div>
-
-
-                                    <script>
-                                       
-                                        $(function () { 
-                                            $('#imHeader_imMenuObject_04 ul li').not('.imMnMnSeparator').each(function () { 
-                                                var $this = $(this), timeout = 0;
-                                                $this.on('mouseenter', function () {
-                                                    if ($(this).parents('#imHeader_imMenuObject_04-menu-opened').length > 0) return; 
-                                                    clearTimeout(timeout); 
-                                                    setTimeout(function () {$this.children('ul, .multiple-column').stop(false, false).fadeOut(); 
-                                                        }, 250); 
-                                                        }).on('mouseleave', function () {
-                                                            if ($(this).parents('#imHeader_imMenuObject_04-menu-opened').length > 0) return;
-                                                            timeout = setTimeout(function () {
-                                                                $this.children('ul, .multiple-column').stop(false, false).fadeOut();
-                                                                }, 250); 
-                                                                });
-                                                                }); 
-                                                                });
-
-                                    </script>
-                                
-                            </div>
-
-                        </div>
 
                         <div id="imHeader_imObjectImage_07_wrapper" class="template-object-wrapper">
                             <div id="imHeader_imCell_7" class="">
@@ -106,8 +54,100 @@
                     </div>
                 </header>
 
+                <div id="imContentContainer">
+                    <div id="imContentGraphics"></div>
+                    <main id="imContent">
+                        <a id="imGoToCont"></a>
+                        <div id="imGroup_1" class="imVGroup">
+                            <div id="imPageRow_1" class="imPageRow" style="">
+                                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden;"><div id="imPageRowGraphics_1"></div></div>
+                                <div id="imPageRowContent_1" class="imContentDataContainer">
+                                <div id="imCell_1" class="animable fadeInLeft animated"> <div id="imCellStyleGraphics_1"></div><div id="imCellStyle_1" data-responsive-sequence-number="1"><div id="imTextObject_01">
+                                <div class="text-tab-content" id="imTextObject_01_tab0" style="">
+                                                <div class="text-inner">
+                                                    <div class="imTACenter">
+                                                            <span class="ff1">BIENVENIDOS!</span>
+                                                    </div>
+                                                    <div class="imTACenter">
+                                                        
+                                                                {% block content %}{% endblock %}
+                                                        
+                                                    </div>
+                                                    
+                                                </div>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                                <script>
+                                    x5engine.boot.push(function () {
+                                    x5engine.utils.onElementInViewPort($('#imCell_1').get(0), function () {
+                                    x5engine.utils.revealObject($("#imCell_1"))
+                                    }, 100);
+                                    });
+                                </script>
+                                </div>
+                            </div>
+
+
+                            <div id="imPageRow_7" class="imPageRow">
+                            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden;">
+                                <div id="imPageRowGraphics_7"></div>
+                            </div>
+                            <div id="imPageRowContent_7" class="imContentDataContainer">
+                                <div id="imGroup_3" class="imHGroup">
+                                    <div id="imCell_6" class="">
+                                        <div id="imCellStyleGraphics_6"></div>
+                                        <div id="imCellStyle_6" data-responsive-sequence-number="8">
+                                            <div id="imTextObject_06">
+                                                <div class="text-tab-content" id="imTextObject_06_tab0" style="">
+                                                    <div class="text-inner">
+                                                        <div class="imTARight"><span class="fs11lh1-5 cf1">Teléfonos:
+                                                                222 819 713 / +569
+                                                                5008 0630</span></div>
+                                                        <div class="imTARight"><span class="fs11lh1-5"><span
+                                                                    class="cf1">Dirección: Los Pioneros 0291 -
+                                                                    Horarios de atención: 9:00 a 17:00
+                                                                    hrs.</span><br></span></div>
+                                                        <div class="imTACenter">
+                                                            <div class="imTARight"><span class="fs11lh1-5 cf1">Correo:
+                                                                    colegioanakena@hotmail.com</span></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="imCell_9" class="">
+                                        <div id="imCellStyleGraphics_9"></div>
+                                        <div id="imCellStyle_9" data-responsive-sequence-number="9">
+                                            <div id="imTextObject_09">
+                                                <div class="text-tab-content" id="imTextObject_09_tab0" style="">
+                                                    <div class="text-inner">
+                                                        <div><img class="image-0" src="/static/images/membrete.jpg"
+                                                                title="" alt=""><br></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
+
+                </div>
+                <div class="imClear"></div>
+                </main>
             </div>
+
+
         </div>
+
+    </div>
 
 
 </body>
