@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+
+                <table rules="rows" style="width:779px;" align="center" cellspacing="0" border="1">
+                        <tbody>
+                            <tr style="color:White;background-color:#0B72B5;font-family:#ff9108;" valign="middle"
+                                align="center">
+                                <th scope="col">Alumno</th>
+                                <th scope="col">Rut</th>
+                                <th scope="col" style="width:100px;" align="center">Estado</th>
+                                <th scope="col" style="width:50px;" valign="middle" align="center">Operaciones</th>
+
+                                    {% for i in valor%}
+                                    <ul>
+                                    <tr class="StyleSheet" style="font-weight:bold;">
+                                        <td style="width:200px;" align="left">{{i[0]}}</td>
+                                        <td style="width:100px;" align="left">{{i[1]}}</td>
+                                        <td style="width:100px;" align="center">Disponible</td>
+                                        <td style="width:150px;" valign="middle" align="center">
+                                            <input type="button"  style="background-color: red">
+                                            <input type="button"  style="background-color: blue">
+                                            <input type="button"  style="background-color: green">
+                                            <input type="button"  style="background-color: black">
+                                        </td>
+                                            
+                                    </tr>
+                                    </ul>
+
+
+                                    {% endfor %}
+
+                                
+
+
+                        </tbody>
+                    </table>
+                    <form action="/index.html" , method="get">
+                        <input type="submit" value="volver"></input>
+                    </form>
+                    {% endblock %}
+            
+        
+    
+
