@@ -16,12 +16,20 @@
                                         <td style="width:200px;" align="left">{{i[0]}}</td>
                                         <td style="width:100px;" align="left">{{i[1]}}</td>
                                         <td style="width:100px;" align="center">Disponible</td>
-                                        <td style="width:150px;" valign="middle" align="center">
-                                            <input type="button"  style="background-color: red">
-                                            <input type="button"  style="background-color: blue">
-                                            <input type="button"  style="background-color: green">
-                                            <input type="button"  style="background-color: black">
+                                        <td style="width:250px;" valign="middle" align="center">
+
+                                        <form action="/nuevaficha"  method="post">  
+                                            <input type="hidden" name="key" value={{i[1]}}></input>
+                                            <input type="submit" value="AGREGAR" style="background-color: red"></input>
+                                        </form>
+
+
+                                        <form action="/curso"  method="post">   
+                                            <input type="hidden" name="key" value={{i[1]}}></input>
+                                            <input type="submit" value="MODIFICAR" style="background-color: blue"></input>
+                                        </form>
                                         </td>
+                                            
                                             
                                     </tr>
                                     </ul>
@@ -34,8 +42,9 @@
 
                         </tbody>
                     </table>
-                    <form action="/index.html" , method="get">
-                        <input type="submit" value="volver"></input>
+                    
+                    <form action="/index" method="get">
+                        <input type="submit" value="volver" style="background-color: rgb(255, 123, 0)"></input>
                     </form>
                     {% endblock %}
             

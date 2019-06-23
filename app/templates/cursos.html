@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
 
-<form action="/index.html" , method="get">
+<form action="/index" , method="get">
     <input type="submit" value="volver"></input>
 </form>
 
 
 {% for i in valor %}
 
-<form action="/lista_alumnos.html", method="post">  
+<form action="/lista_alumnos", method="post">  
     <input type="hidden" name="valor" value={{i}}>
     <input type="submit"  value={{i}}></input>
     </form>
