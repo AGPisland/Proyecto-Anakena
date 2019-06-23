@@ -193,4 +193,28 @@ def login():
 def logout():
     # remove the username from the session if it's there
     session.pop('username', None)
-    return redirect(url_for('index')) 
+    return redirect(url_for('index'))
+  
+ 
+@app.route('/buscar',methods=['GET','POST'])
+def buscar_alumno():
+    if request.method == 'GET' and request.args.get('apellido') != None:
+        nombres = request.args.get('nombre')
+        apellidos = request.args.get('apellido')
+        char0 = """SELECT * FROM fichas WHERE fichas.apellido = '%s' AND fichas.nombre = '%s';"""%(apellidos,nombres)
+        cur.execute(char0)
+        char0 = cur.fetchall()
+        print (char0[0][3])
+        print (char0)
+
+        mi_lista = []
+        mi_lista.append(char0[0][3])
+        mi_lista.append(char0[0][4])
+        mi_lista.append(char0[0][5])
+
+        return lista(mi_lista)
+    return render_template("buscar.html")
+
+
+def lista(datos):
+    return render_template("lista.html",datos=datos)
