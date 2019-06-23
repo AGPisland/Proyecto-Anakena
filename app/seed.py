@@ -6,12 +6,6 @@ conn = psycopg2.connect("dbname=%s user=%s password=%s" %
 
 cur = conn.cursor()
 
-sql = """DROP table fichas"""
-try:
-    #cur.execute(sql)
-	pass
-except:
-    pass
 
 
 sql = """create table fichas (id serial PRIMARY KEY, decreto varchar(20), curso varchar(20), nombre varchar(40), apellido varchar(40), rutentero int, digitorut varchar(2));"""
@@ -27,7 +21,7 @@ lista_de_nombres = ['MARIA', 'MARIA CARMEN', 'JOSEFA', 'ISABEL', 'MARIA DOLORES'
 lista_de_apellidos = ['GARCIA', 'MARTINEZ', 'LOPEZ', 'SANCHEZ', 'GONZALEZ', 'GOMEZ', 'FERNANDEZ', 'MORENO', 'JIMENEZ', 'PEREZ', 'RODRIGUEZ', 'NAVARRO', 'RUIZ', 'DIAZ', 'SERRANO', 'HERNANDEZ', 'MUÑOZ', 'SAEZ', 'ROMERO', 'RUBIO', 'ALFARO', 'MOLINA', 'LOZANO', 'CASTILLO',
                       'PICAZO', 'ORTEGA', 'MORCILLO', 'CANO', 'MARIN', 'CUENCA', 'GARRIDO', 'TORRES', 'CORCOLES', 'GIL', 'ORTIZ', 'CALERO', 'VALERO', 'CEBRIAN', 'RODENAS', 'ALARCON', 'BLAZQUEZ', 'NUÑEZ', 'PARDO', 'MOYA', 'TEBAR', 'REQUENA', 'ARENAS', 'BALLESTEROS', 'COLLADO', 'RAMIREZ']
 lista_ruts = []
-
+ 
 
 def remove(lista):
     va = random.choice(lista)

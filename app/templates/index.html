@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 
-<form action="/curso.html", method="post">  
+<form action="/curso", method="post">  
 <input type="hidden" name="valor" value={{valor[1]}}>
 <input type="submit"  value={{valor[1]}}></input>
 </form>
 
-<form action="/curso.html", method="post">
+<form action="/curso", method="post">
 <input type="hidden" name="valor" value={{valor[0]}}>
 <input type="submit"  value={{valor[0]}}></input>    
 </form>
