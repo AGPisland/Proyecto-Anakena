@@ -3,7 +3,7 @@ from app import app
 from flask import render_template, request, redirect, session, Flask, url_for, escape
 import psycopg2
 conn = psycopg2.connect("dbname=%s user=%s password=%s" %
-                        ('anakena', 'alonsogjp', 'Alon'))
+                        ('anakena', 'Alon', 'Alon'))
 
 cur = conn.cursor()
 
@@ -173,27 +173,43 @@ def ficharevision():
 
 roles=['directora', 'secretaria', 'profesora']
 
-@app.route('/login', methods=['GET', 'POST'])
+
+      
+@app.route( "/login" , methods = [ 'GET' , 'POST' ] )
 def login():
-    if request.method == 'POST': 
-        role=request.form['username']
-        if role in roles:
-            session['rol'] = role
-            return redirect(url_for('index'))
-        
+    
+    if current_user.is_authenticated :
 
-    return '''
-        <form method="post">
-            <p><input type=text name=username>
-            <p><input type=submit value=Login>
-        </form>
-    '''
+        return redirect( url_for('index' ) )
 
-@app.route('/logout')
+    form = LoginForm() 
+
+    if form.validate_on_submit() :
+        user = User.query.filter_by( username = form.username.data ).first()
+
+        if user.rol == "director":
+            return redirect( url_for('director'))
+
+        if user.rol == "profesor":
+            return redirect( url_for('profesor'))
+
+        if user.rol == "secretaria":
+            return redirect( url_for('secretaria'))
+
+        if user is None or not user.check_password( form.password.data ) :
+            flash( "Usuario o contraseña invalido" )
+            return redirect( url_for('login') )
+
+        login_user( user, remember = form.remember_me.data )
+        return redirect( url_for("index") )
+
+    return render_template ( "login.html" , title = "Home Page", form = form )
+
+@app.route("/logout")
 def logout():
-    # remove the username from the session if it's there
-    session.pop('username', None)
-    return redirect(url_for('index'))
+    logout_user()
+    return redirect( url_for( "login" ) )
+
   
  
 @app.route('/buscar',methods=['GET','POST'])
@@ -218,3 +234,4 @@ def buscar_alumno():
 
 def lista(datos):
     return render_template("lista.html",datos=datos)
+
