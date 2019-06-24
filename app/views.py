@@ -3,7 +3,7 @@ from app import app
 from flask import render_template, request, redirect, session, Flask, url_for, escape
 import psycopg2
 conn = psycopg2.connect("dbname=%s user=%s password=%s" %
-                        ('anakena', 'alonsogjp', 'Alon'))
+                        ('anakena', 'Alon', 'Alon'))
 
 cur = conn.cursor()
 
@@ -11,31 +11,126 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 @app.route('/')
-@app.route('/index')
+@app.route('/index.html')
 def index():
-    sql = """select decreto from fichas group by(decreto);"""
-    cur.execute(sql)
-    data = cur.fetchall()
-    print(data)
-    decretouno = str(data[0])
-    decretodos = str(data[1])
-    print(decretodos[2:len(decretouno)-3], decretouno)
-    decretouno = decretouno[2:len(decretouno)-3]
-    decretodos = decretodos[2:len(decretodos)-3]
-    data = [decretouno, decretodos]
-    print(data)
-    return render_template("index.html", valor=data)
+    if 'rol' in session:
+        print('sesion: ',session)
+        sql="""select decreto from fichas group by(decreto);"""
+        cur.execute(sql)
+        data=cur.fetchall()
+        print(data)
+        decretouno=str(data[0])
+        decretodos=str(data[1])
+        print(decretodos[2:len(decretouno)-3],decretouno)
+        decretouno=decretouno[2:len(decretouno)-3]
+        decretodos=decretodos[2:len(decretodos)-3]
+        data=[decretouno,decretodos]
+        print(data)
+        return render_template("index.html",valor=data )
+    return 'You are not logged in'
 
+@app.route('/curso', methods=['GET', 'POST'])
+def curso():
+    #PUEDEN ACCEDER TODOS LOS ROLES!
+    print('ACA!!!')
+    if request.method == 'POST':
+        decreto = request.form['valor']
+        print(decreto)
+        sql = """select curso from fichas where decreto='%s' group by curso; """ % decreto
+        cur.execute(sql)
+        cursos = cur.fetchall()
+        data = []
+        for i in cursos:
+            i = str(i)
+            data.append(i[2:len(i)-3])
+        print(data)
+        return render_template("cursos.html", valor=data)
+
+@app.route('/lista_alumnos', methods=['GET', 'POST'])
+def lista_de_alumnos():
+    #AQUI DIFIEREN LOS PERMISOS POR ROLES! 
+    #LA SECRETARIA SOLO PUEDE TENER EL HTML QUE TENGA LAS PROPIEDADES DE AGREGAR, CORREJIR, Y VER
+    #LA DIRECTORA SOLO PUEDE TENER EL HTML QUE TENGA REVISAR, TERMINAR, VER
+    #LA PROFESORA SOLO PUEDE VER!
+    print('ACA!!! lista de alumnos')
+    if request.method == 'POST':
+        curso = request.form['valor']
+        print(curso)
+        sql = """select nombre, apellido, rutentero, digitorut, estado from fichas where curso='%s'; """ % curso
+        cur.execute(sql)
+        cursos = cur.fetchall()
+        data = []
+        for i in cursos:
+            i = str(i)
+            i = i[2:len(i)-1]
+            data.append(i)
+            print(i, '\n')
+        cursos = []
+        rutas = []
+        l=True
+        for i in data:
+            aux = ""
+            aux2 = ""
+            aux3=""   
+            for j in i:
+                if j is "'" or j is ",":
+                    pass
+                else:
+                    try:
+                        j = int(j)
+                        aux2 = aux2+str(j)
+                        l=False
+                    except:
+                        pass
+                        if l is False:
+                            #terminamos los numeros
+                            aux3=aux3+j
+                        else:
+                            aux = aux+j
+            l=True
+            aux2 = aux2[0:len(aux2)-1]+'-'+aux2[len(aux2)-1]
+            rutas = [aux, aux2, aux3]
+            cursos.append(rutas)
+        data = cursos
+        del cursos
+        print(data)
+
+        #HASTA ACA TENEMOS LA LISTA DE LOS ALUMNOS, EN EL VALOR DATA, + FALTA AGREGAR EL JSON Y EL ESTADO!
+        if session['rol']==roles[0]:
+            #directora
+            return render_template("lista_alumnos_secretaria.html", valor=data)
+        else:
+            if session['rol'] is roles[1]:
+                #secretaria
+                return render_template("lista_alumnos_secretaria.html", valor=data)
+            else:
+                if session['rol'] is roles[2]:
+                    #profesora
+                    return render_template("lista_alumnos_secretaria.html", valor=data)
+                else:
+                    return 'you not permission'
+        
+
+@app.route('/ver_ficha', methods=['GET', 'POST'])
+def prueba():
+    print('ACA!!! ver ficha')
+    if request.method == 'POST':
+        key = request.form['key']
+        key=key[0:len(key)-2]
+        sql = """select fichaj from fichas where rutentero=%s; """ % int(key)
+        print(sql)
+        cur.execute(sql)
+        filejson = cur.fetchall()
+        dict=filejson[0][0]
+        #HASTA ACA TENEMOS LA LISTA DE LOS ALUMNOS, EN EL VALOR DATA, + FALTA AGREGAR EL JSON Y EL ESTADO!
+        return render_template("ver_ficha.html", jason=dict)
 
 @app.route('/nuevaficha', methods=['GET', 'POST'])
 def nuevaficha():
     print('aca!!! ficharevision')
     if request.method == 'POST':
-        key = request.form['key']
-        print(key)
         print('nuevo fichas!!!!!!')
         return render_template("nueva_ficha.html")
-
 
 @app.route('/ficha_revision', methods=['GET', 'POST'])
 def ficharevision():
@@ -76,61 +171,9 @@ def ficharevision():
 
         return jsonfile
 
-
-@app.route('/curso', methods=['GET', 'POST'])
-def curso():
-    print('ACA!!!')
-    if request.method == 'POST':
-        decreto = request.form['valor']
-        print(decreto)
-        sql = """select curso from fichas where decreto='%s' group by curso; """ % decreto
-        cur.execute(sql)
-        cursos = cur.fetchall()
-        data = []
-        for i in cursos:
-            i = str(i)
-            data.append(i[2:len(i)-3])
-        print(data)
-        return render_template("cursos.html", valor=data)
+roles=['directora', 'secretaria', 'profesora']
 
 
-@app.route('/lista_alumnos', methods=['GET', 'POST'])
-def lista_de_alumnos():
-    print('ACA!!!')
-    if request.method == 'POST':
-        curso = request.form['valor']
-        print(curso)
-        sql = """select nombre, apellido, rutentero, digitorut from fichas where curso='%s'; """ % curso
-        cur.execute(sql)
-        cursos = cur.fetchall()
-        data = []
-        for i in cursos:
-            i = str(i)
-            i = i[2:len(i)-1]
-            data.append(i)
-            print(i, '\n')
-        cursos = []
-        rutas = []
-        for i in data:
-            aux = ""
-            aux2 = ""
-            for j in i:
-                if j is "'" or j is ",":
-                    pass
-                else:
-                    try:
-                        j = int(j)
-                        aux2 = aux2+str(j)
-                    except:
-                        pass
-                        aux = aux+j
-            aux2 = aux2[:len(aux2)-2]+'-'+aux2[len(aux2)-1]
-            rutas = [aux, aux2]
-            cursos.append(rutas)
-        data = cursos
-        del cursos
-        print(data)
-        return render_template("lista_alumnos.html", valor=data)
       
 @app.route( "/login" , methods = [ 'GET' , 'POST' ] )
 def login():
@@ -166,3 +209,29 @@ def login():
 def logout():
     logout_user()
     return redirect( url_for( "login" ) )
+
+  
+ 
+@app.route('/buscar',methods=['GET','POST'])
+def buscar_alumno():
+    if request.method == 'GET' and request.args.get('apellido') != None:
+        nombres = request.args.get('nombre')
+        apellidos = request.args.get('apellido')
+        char0 = """SELECT * FROM fichas WHERE fichas.apellido = '%s' AND fichas.nombre = '%s';"""%(apellidos,nombres)
+        cur.execute(char0)
+        char0 = cur.fetchall()
+        print (char0[0][3])
+        print (char0)
+
+        mi_lista = []
+        mi_lista.append(char0[0][3])
+        mi_lista.append(char0[0][4])
+        mi_lista.append(char0[0][5])
+
+        return lista(mi_lista)
+    return render_template("buscar.html")
+
+
+def lista(datos):
+    return render_template("lista.html",datos=datos)
+

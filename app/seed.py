@@ -5,10 +5,22 @@ conn = psycopg2.connect("dbname=%s user=%s password=%s" %
                         ('anakena', 'alonsogjp', 'Alon'))
 
 cur = conn.cursor()
+import json
+from psycopg2.extras import Json
+
+json1 = """{"Primer Nombre":"%s","Segundo Nombre":"%s","Apellido Padre":"%s","Apellido Madre":"%s","Edad":"%s","Fecha de nacimiento":"%s","Nacionalidad":"%s","RUT Alumno":"%s","Digito Verificador":"%s","Domicilio":"%s","Comuna":"%s","Nombre del padre":"%s","Nacionalidad":"%s","RUT Padre":"%s","Edad":"%s","Celular":"%s","Correo":"%s","Nombre de la Madre":"%s","Nacionalidad":"%s","RUT Madre":"%s","Edad":"%s","Celular":"%s","Correo":"%s","Antecedentes Medicos Importantes":"%s","Fono de emergencias":"%s","Nombre Apoderado":"%s","Servicio de Salud del Estudiante":"%s","Seguro Medico":"%s" }""" % (
+            "prueba", "prueba", "prueba", "prueba", "prueba", "prueba", "prueba","prueba" , "prueba", "prueba", "prueba", "prueba", "prueba", "prueba", "prueba", "prueba", "prueba", "prueba", "prueba", "prueba", "prueba", "prueba", "prueba", "prueba", "prueba", "prueba", "prueba", "prueba")
+
+print(json1)
+
+jsonn=json.loads(json1)
+json1=Json(jsonn)
+jsonn=json1
+print(json1)
 
 
 
-sql = """create table fichas (id serial PRIMARY KEY, decreto varchar(20), curso varchar(20), nombre varchar(40), apellido varchar(40), rutentero int, digitorut varchar(2));"""
+sql = """create table fichas (id serial PRIMARY KEY, decreto varchar(20), curso varchar(20), nombre varchar(40), apellido varchar(40), rutentero int, digitorut varchar(2), estado varchar(20), fichaj json);"""
 cur.execute(sql)
 
 lista_de_decretos = ['DECRETO1', 'DECRETO2']
@@ -21,7 +33,8 @@ lista_de_nombres = ['MARIA', 'MARIA CARMEN', 'JOSEFA', 'ISABEL', 'MARIA DOLORES'
 lista_de_apellidos = ['GARCIA', 'MARTINEZ', 'LOPEZ', 'SANCHEZ', 'GONZALEZ', 'GOMEZ', 'FERNANDEZ', 'MORENO', 'JIMENEZ', 'PEREZ', 'RODRIGUEZ', 'NAVARRO', 'RUIZ', 'DIAZ', 'SERRANO', 'HERNANDEZ', 'MUÑOZ', 'SAEZ', 'ROMERO', 'RUBIO', 'ALFARO', 'MOLINA', 'LOZANO', 'CASTILLO',
                       'PICAZO', 'ORTEGA', 'MORCILLO', 'CANO', 'MARIN', 'CUENCA', 'GARRIDO', 'TORRES', 'CORCOLES', 'GIL', 'ORTIZ', 'CALERO', 'VALERO', 'CEBRIAN', 'RODENAS', 'ALARCON', 'BLAZQUEZ', 'NUÑEZ', 'PARDO', 'MOYA', 'TEBAR', 'REQUENA', 'ARENAS', 'BALLESTEROS', 'COLLADO', 'RAMIREZ']
 lista_ruts = []
- 
+
+lista_de_estado=['APROBADO',  'BORRADOR','TERMINADO'] 
 
 def remove(lista):
     va = random.choice(lista)
@@ -36,8 +49,8 @@ for i in range(4):
         lista_ruts.append(rut)
         digit = str(random.randint(0, 9))
 
-    sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut) values ('%s','%s','%s','%s',%s,'%s');""" % (
-        lista_de_decretos[1], lista_de_curso_decreto2[0], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit)
+    sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut, estado, fichaj) values ('%s','%s','%s','%s',%s,'%s','%s', %s);""" % (
+        lista_de_decretos[1], lista_de_curso_decreto2[0], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit, lista_de_estado[0], jsonn)
 
     print(sql)
     cur.execute(sql)
@@ -49,8 +62,8 @@ for i in range(4):
         lista_ruts.append(rut)
         digit = str(random.randint(0, 9))
 
-    sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut) values ('%s','%s','%s','%s',%s,'%s');""" % (
-        lista_de_decretos[1], lista_de_curso_decreto2[1], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit)
+    sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut, estado, fichaj) values ('%s','%s','%s','%s',%s,'%s','%s', %s);""" % (
+        lista_de_decretos[1], lista_de_curso_decreto2[1], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit,lista_de_estado[0], jsonn)
 
     print(sql)
     cur.execute(sql)
@@ -62,8 +75,8 @@ for i in range(12):
         lista_ruts.append(rut)
         digit = str(random.randint(0, 9))
 
-    sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut) values ('%s','%s','%s','%s',%s,'%s');""" % (
-        lista_de_decretos[0], lista_de_curso_decreto1[0], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit)
+    sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut, estado, fichaj) values ('%s','%s','%s','%s',%s,'%s','%s', %s);""" % (
+        lista_de_decretos[0], lista_de_curso_decreto1[0], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit,lista_de_estado[0], jsonn)
 
     print(sql)
     cur.execute(sql)
@@ -75,8 +88,8 @@ for i in range(10):
         lista_ruts.append(rut)
         digit = str(random.randint(0, 9))
 
-    sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut) values ('%s','%s','%s','%s',%s,'%s');""" % (
-        lista_de_decretos[0], lista_de_curso_decreto1[1], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit)
+    sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut, estado, fichaj) values ('%s','%s','%s','%s',%s,'%s','%s', %s);""" % (
+        lista_de_decretos[0], lista_de_curso_decreto1[1], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit,lista_de_estado[0], jsonn)
 
     print(sql)
     cur.execute(sql)
@@ -88,8 +101,8 @@ for i in range(10):
         lista_ruts.append(rut)
         digit = str(random.randint(0, 9))
 
-    sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut) values ('%s','%s','%s','%s',%s,'%s');""" % (
-        lista_de_decretos[0], lista_de_curso_decreto1[2], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit)
+    sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut, estado, fichaj) values ('%s','%s','%s','%s',%s,'%s','%s',%s);""" % (
+        lista_de_decretos[0], lista_de_curso_decreto1[2], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit,lista_de_estado[0], jsonn)
 
     print(sql)
     cur.execute(sql)
@@ -101,8 +114,8 @@ for i in range(10):
         lista_ruts.append(rut)
         digit = str(random.randint(0, 9))
 
-    sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut) values ('%s','%s','%s','%s',%s,'%s');""" % (
-        lista_de_decretos[0], lista_de_curso_decreto1[3], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit)
+    sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut, estado, fichaj) values ('%s','%s','%s','%s',%s,'%s','%s', %s);""" % (
+        lista_de_decretos[0], lista_de_curso_decreto1[3], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit,lista_de_estado[0], jsonn)
 
     print(sql)
     cur.execute(sql)
@@ -123,3 +136,6 @@ cur.execute(sql)
 
 
 '''
+
+
+
