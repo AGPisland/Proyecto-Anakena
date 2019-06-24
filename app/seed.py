@@ -34,7 +34,7 @@ lista_de_apellidos = ['GARCIA', 'MARTINEZ', 'LOPEZ', 'SANCHEZ', 'GONZALEZ', 'GOM
                       'PICAZO', 'ORTEGA', 'MORCILLO', 'CANO', 'MARIN', 'CUENCA', 'GARRIDO', 'TORRES', 'CORCOLES', 'GIL', 'ORTIZ', 'CALERO', 'VALERO', 'CEBRIAN', 'RODENAS', 'ALARCON', 'BLAZQUEZ', 'NUÑEZ', 'PARDO', 'MOYA', 'TEBAR', 'REQUENA', 'ARENAS', 'BALLESTEROS', 'COLLADO', 'RAMIREZ']
 lista_ruts = []
 
-lista_de_estado=['APROBADO',  'BORRADOR','TERMINADO'] 
+lista_de_estado=['APROBADO', 'RECHAZADA', 'BORRADOR','TERMINADO'] 
 
 def remove(lista):
     va = random.choice(lista)
@@ -50,7 +50,7 @@ for i in range(4):
         digit = str(random.randint(0, 9))
 
     sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut, estado, fichaj) values ('%s','%s','%s','%s',%s,'%s','%s', %s);""" % (
-        lista_de_decretos[1], lista_de_curso_decreto2[0], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit, lista_de_estado[0], jsonn)
+        lista_de_decretos[1], lista_de_curso_decreto2[0], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit, lista_de_estado[random.randint(0,3)], jsonn)
 
     print(sql)
     cur.execute(sql)
@@ -63,7 +63,7 @@ for i in range(4):
         digit = str(random.randint(0, 9))
 
     sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut, estado, fichaj) values ('%s','%s','%s','%s',%s,'%s','%s', %s);""" % (
-        lista_de_decretos[1], lista_de_curso_decreto2[1], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit,lista_de_estado[0], jsonn)
+        lista_de_decretos[1], lista_de_curso_decreto2[1], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit,lista_de_estado[random.randint(0,3)], jsonn)
 
     print(sql)
     cur.execute(sql)
@@ -76,7 +76,7 @@ for i in range(12):
         digit = str(random.randint(0, 9))
 
     sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut, estado, fichaj) values ('%s','%s','%s','%s',%s,'%s','%s', %s);""" % (
-        lista_de_decretos[0], lista_de_curso_decreto1[0], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit,lista_de_estado[0], jsonn)
+        lista_de_decretos[0], lista_de_curso_decreto1[0], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit,lista_de_estado[random.randint(0,3)], jsonn)
 
     print(sql)
     cur.execute(sql)
@@ -89,7 +89,7 @@ for i in range(10):
         digit = str(random.randint(0, 9))
 
     sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut, estado, fichaj) values ('%s','%s','%s','%s',%s,'%s','%s', %s);""" % (
-        lista_de_decretos[0], lista_de_curso_decreto1[1], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit,lista_de_estado[0], jsonn)
+        lista_de_decretos[0], lista_de_curso_decreto1[1], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit,lista_de_estado[random.randint(0,3)], jsonn)
 
     print(sql)
     cur.execute(sql)
@@ -102,7 +102,7 @@ for i in range(10):
         digit = str(random.randint(0, 9))
 
     sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut, estado, fichaj) values ('%s','%s','%s','%s',%s,'%s','%s',%s);""" % (
-        lista_de_decretos[0], lista_de_curso_decreto1[2], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit,lista_de_estado[0], jsonn)
+        lista_de_decretos[0], lista_de_curso_decreto1[2], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit,lista_de_estado[random.randint(0,3)], jsonn)
 
     print(sql)
     cur.execute(sql)
@@ -115,7 +115,7 @@ for i in range(10):
         digit = str(random.randint(0, 9))
 
     sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut, estado, fichaj) values ('%s','%s','%s','%s',%s,'%s','%s', %s);""" % (
-        lista_de_decretos[0], lista_de_curso_decreto1[3], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit,lista_de_estado[0], jsonn)
+        lista_de_decretos[0], lista_de_curso_decreto1[3], remove(lista_de_nombres), remove(lista_de_apellidos), rut, digit,lista_de_estado[random.randint(0,3)], jsonn)
 
     print(sql)
     cur.execute(sql)

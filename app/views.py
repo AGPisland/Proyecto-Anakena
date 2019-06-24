@@ -1,4 +1,5 @@
 import json
+from psycopg2.extras import Json
 from app import app
 from flask import render_template, request, redirect, session, Flask, url_for, escape
 import psycopg2
@@ -11,7 +12,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 @app.route('/')
-@app.route('/index.html')
+@app.route('/index')
 def index():
     if 'rol' in session:
         print('sesion: ',session)
@@ -26,7 +27,8 @@ def index():
         decretodos=decretodos[2:len(decretodos)-3]
         data=[decretouno,decretodos]
         print(data)
-        return render_template("index.html",valor=data )
+        return render_template("index.html",valor=data)
+
     return 'You are not logged in'
 
 @app.route('/curso', methods=['GET', 'POST'])
@@ -34,7 +36,7 @@ def curso():
     #PUEDEN ACCEDER TODOS LOS ROLES!
     print('ACA!!!')
     if request.method == 'POST':
-        decreto = request.form['valor']
+        decreto = request.form['decreto']
         print(decreto)
         sql = """select curso from fichas where decreto='%s' group by curso; """ % decreto
         cur.execute(sql)
@@ -44,7 +46,7 @@ def curso():
             i = str(i)
             data.append(i[2:len(i)-3])
         print(data)
-        return render_template("cursos.html", valor=data)
+        return render_template("cursos.html", valor=data, decreto=decreto)
 
 @app.route('/lista_alumnos', methods=['GET', 'POST'])
 def lista_de_alumnos():
@@ -54,8 +56,9 @@ def lista_de_alumnos():
     #LA PROFESORA SOLO PUEDE VER!
     print('ACA!!! lista de alumnos')
     if request.method == 'POST':
-        curso = request.form['valor']
-        print(curso)
+        curso = request.form['curso']
+        decreto = request.form['decreto']
+        print(curso, decreto)
         sql = """select nombre, apellido, rutentero, digitorut, estado from fichas where curso='%s'; """ % curso
         cur.execute(sql)
         cursos = cur.fetchall()
@@ -93,29 +96,44 @@ def lista_de_alumnos():
             cursos.append(rutas)
         data = cursos
         del cursos
-        print(data)
+        
 
         #HASTA ACA TENEMOS LA LISTA DE LOS ALUMNOS, EN EL VALOR DATA, + FALTA AGREGAR EL JSON Y EL ESTADO!
         if session['rol']==roles[0]:
             #directora
-            return render_template("lista_alumnos_secretaria.html", valor=data)
+            return render_template("lista_alumnos_directora.html", valor=data, curso=curso, decreto=decreto)
         else:
-            if session['rol'] is roles[1]:
+            if session['rol'] == roles[1]:
                 #secretaria
-                return render_template("lista_alumnos_secretaria.html", valor=data)
+                aux=data
+                data=[]
+                for i in aux:
+                    if i[2] != '  TERMINADO':
+                        data.append(i)  
+
+                return render_template("lista_alumnos_secretaria.html", valor=data, curso=curso, decreto=decreto)
             else:
-                if session['rol'] is roles[2]:
+                if session['rol'] == roles[2]:
                     #profesora
-                    return render_template("lista_alumnos_secretaria.html", valor=data)
+                    print(data)
+                    aux=data
+                    data=[]
+                    for i in aux:
+                        if i[2] == '  APROBADO':
+                            data.append(i)
+
+                    return render_template("lista_alumnos_profesora.html", valor=data, curso=curso, decreto=decreto)
                 else:
                     return 'you not permission'
-        
 
 @app.route('/ver_ficha', methods=['GET', 'POST'])
 def prueba():
     print('ACA!!! ver ficha')
+    #no importa el rol aca, todos pueden ver la ficha!
     if request.method == 'POST':
         key = request.form['key']
+        curso = request.form['curso']
+        decreto = request.form['decreto']
         key=key[0:len(key)-2]
         sql = """select fichaj from fichas where rutentero=%s; """ % int(key)
         print(sql)
@@ -123,19 +141,64 @@ def prueba():
         filejson = cur.fetchall()
         dict=filejson[0][0]
         #HASTA ACA TENEMOS LA LISTA DE LOS ALUMNOS, EN EL VALOR DATA, + FALTA AGREGAR EL JSON Y EL ESTADO!
-        return render_template("ver_ficha.html", jason=dict)
+        return render_template("ver_ficha.html", jason=dict,  curso=curso, decreto=decreto)
 
 @app.route('/nuevaficha', methods=['GET', 'POST'])
 def nuevaficha():
     print('aca!!! ficharevision')
     if request.method == 'POST':
+        curso = request.form['curso']
+        decreto = request.form['decreto']
         print('nuevo fichas!!!!!!')
-        return render_template("nueva_ficha.html")
+        return render_template("nueva_ficha.html", curso=curso, decreto=decreto)
+
+@app.route('/eliminar_secre', methods=['GET', 'POST'])
+def eliminar_secre():
+    print('aca!!! eliminar FICHA SSI LO ESTA EN ESTADO DE RECHAZADO')
+    if request.method == 'POST':
+        key = request.form['key']
+        curso = request.form['curso']
+        decreto = request.form['decreto']
+        key=key[0:len(key)-2]
+        sql = """select estado from fichas where rutentero=%s; """ % int(key)
+        print(sql)
+        cur.execute(sql)
+        estado=cur.fetchone()
+        print(estado)
+        if estado[0] == 'RECHAZADA' or estado[0] == 'BORRADOR':
+            print('se procede a borrar ficha')
+            sql="""delete from fichas where rutentero=%s; """ % int(key)
+            print(sql)
+            cur.execute(sql)
+            conn.commit()
+            return render_template("borrado_secre.html", curso=curso, decreto=decreto)
+        else:
+            print('es otra cosa el estado!')
+            return render_template("error_borrado_secre.html", curso=curso, decreto=decreto)
+        
+@app.route('/reparar', methods=['GET', 'POST'])
+def reparar():
+    print('ACA!!! reparar')
+    #no importa el rol aca, todos pueden ver la ficha!
+    if request.method == 'POST':
+        key = request.form['key']
+        curso = request.form['curso']
+        decreto = request.form['decreto']
+        key=key[0:len(key)-2]
+        sql = """select fichaj from fichas where rutentero=%s; """ % int(key)
+        print(sql)
+        cur.execute(sql)
+        filejson = cur.fetchall()
+        dict=filejson[0][0]
+        #HASTA ACA TENEMOS LA LISTA DE LOS ALUMNOS, EN EL VALOR DATA, + FALTA AGREGAR EL JSON Y EL ESTADO!
+        return render_template("reparar_ficha.html", jason=dict, curso=curso, decreto=decreto)
 
 @app.route('/ficha_revision', methods=['GET', 'POST'])
 def ficharevision():
     print('aca!!! ficharevision')
     if request.method == 'POST':
+        curso = request.form['curso']
+        decreto = request.form['decreto']
         a = request.form['Pnombre']
         b = request.form['Snombre']
         c = request.form['apellidoP']
@@ -164,12 +227,45 @@ def ficharevision():
         vv = request.form['salud']
         vvv = request.form['seguro']
         # print((a,b,c,d,e,f,g,h,j,k,q,w,e,r,t,y,u,i,o,p,z,x,v,n,m,aa,vv,vvv))
-        jsonfile = """{"Primer Nombre":"%s","Segundo Nombre":"%s","Apellido Padre":"%s","Apellido Madre":"%s","Edad":"%s","Fecha de nacimiento":"%s","Nacionalidad":"%s","RUT Alumno":"%s","Digito Verificador":"%s","Domicilio":"%s","Comuna":"%s","Nombre del padre":"%s","Nacionalidad":"%s","RUT Padre":"%s","Edad":"%s","Celular":"%s","Correo":"%s","Nombre de la Madre":"%s","Nacionalidad":"%s","RUT Madre":"%s","Edad":"%s","Celular":"%s","Correo":"%s","Antecedentes Medicos Importantes":"%s","Fono de emergencias":"%s","Nombre Apoderado":"%s","Servicio de Salud del Estudiante":"%s","Seguro Medico":"%s" }""" % (
+        json1 = """{"Primer Nombre":"%s","Segundo Nombre":"%s","Apellido Padre":"%s","Apellido Madre":"%s","Edad":"%s","Fecha de nacimiento":"%s","Nacionalidad":"%s","RUT Alumno":"%s","Digito Verificador":"%s","Domicilio":"%s","Comuna":"%s","Nombre del padre":"%s","Nacionalidad":"%s","RUT Padre":"%s","Edad":"%s","Celular":"%s","Correo":"%s","Nombre de la Madre":"%s","Nacionalidad":"%s","RUT Madre":"%s","Edad":"%s","Celular":"%s","Correo":"%s","Antecedentes Medicos Importantes":"%s","Fono de emergencias":"%s","Nombre Apoderado":"%s","Servicio de Salud del Estudiante":"%s","Seguro Medico":"%s" }""" % (
             a, b, c, d, e, f, g, h, j, k, q, w, e, r, t, y, u, i, o, p, z, x, v, n, m, aa, vv, vvv)
-        jsonn = json.loads(jsonfile)
-        print(jsonn)
+        jsonn=json.loads(json1)
+        json1=Json(jsonn)
+        sql = """  insert into fichas (decreto, curso, nombre, apellido, rutentero, digitorut, estado, fichaj) values ('%s','%s','%s','%s',%s,'%s','%s', %s);""" % (
+            decreto, curso, a+' '+b, c +' '+ d, h, j, 'BORRADOR', json1)
+        print(sql)
+        try:
+            cur.execute(sql)
+        except:
+            conn.commit()    
+            return render_template("envio_ficha_error.html", curso=curso, decreto=decreto)
+        
+        conn.commit()
+        return render_template("envio_ficha_exito.html", curso=curso, decreto=decreto)
 
-        return jsonfile
+@app.route('/terminar', methods=['GET', 'POST'])
+def termianardict():
+    print('aca terminar ficha desde directora')
+    if request.method == 'POST':
+        key = request.form['key']
+        curso = request.form['curso']
+        decreto = request.form['decreto']
+        key=key[0:len(key)-2]
+        sql = """select estado from fichas where rutentero=%s; """ % int(key)
+        print(sql)
+        cur.execute(sql)
+        estado=cur.fetchone()
+        print(estado)
+        if estado[0] == 'APROBADO':
+            print('se procede a CAMBIAR EL ESTADO A TERMINADO DE LA  ficha')
+            sql="""UPDATE fichas set estado = 'TERMINADO' where rutentero=%s; """ % int(key)
+            print(sql)
+            cur.execute(sql)
+            conn.commit()
+            return render_template("borrado_secre.html", curso=curso, decreto=decreto)
+        else:
+            print('es otra cosa el estado!')
+            return render_template("error_borrado_secre.html", curso=curso, decreto=decreto)
 
 roles=['directora', 'secretaria', 'profesora']
 
@@ -192,5 +288,48 @@ def login():
 @app.route('/logout')
 def logout():
     # remove the username from the session if it's there
-    session.pop('username', None)
+    session.pop('rol', None)
     return redirect(url_for('index')) 
+
+
+@app.route('/revisar', methods=['GET', 'POST'])
+def revisardirectora():
+    print('ACA!!! revisar directora')
+    #no importa el rol aca, todos pueden ver la ficha!
+    if request.method == 'POST':
+        key = request.form['key']
+        curso = request.form['curso']
+        decreto = request.form['decreto']
+        key=key[0:len(key)-2]
+        sql = """select fichaj from fichas where rutentero=%s; """ % int(key)
+        print(sql)
+        cur.execute(sql)
+        filejson = cur.fetchall()
+        dict=filejson[0][0]
+        #HASTA ACA TENEMOS LA LISTA DE LOS ALUMNOS, EN EL VALOR DATA, + FALTA AGREGAR EL JSON Y EL ESTADO!
+        return render_template("revisar_ficha.html", jason=dict,  curso=curso, decreto=decreto, key=key)
+
+
+@app.route('/aprobar', methods=['GET', 'POST'])
+def aprobardirectora():
+    print('ACA!!! aprobar directora')
+    #no importa el rol aca, todos pueden ver la ficha!
+    if request.method == 'POST':
+        val = request.form['eva']
+        key = request.form['key']
+        curso = request.form['curso']
+        decreto = request.form['decreto']
+        if val == "aprobado":
+            sql="""UPDATE fichas set estado = 'APROBADO' where rutentero=%s; """ % int(key)
+            print(sql)
+            cur.execute(sql)
+            conn.commit()
+            return render_template("aprobado.html", curso=curso, decreto=decreto)
+        else:
+            if val == "rechazado":
+                sql="""UPDATE fichas set estado = 'RECHAZADA' where rutentero=%s; """ % int(key)
+                print(sql)
+                cur.execute(sql)
+                conn.commit()
+                return render_template("rechazado.html", curso=curso, decreto=decreto)
+

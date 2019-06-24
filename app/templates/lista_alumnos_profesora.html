@@ -1,10 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-                <form action="/nuevaficha"  method="post">  
-                    <input type="hidden" name="decreto" value={{decreto}}>
-                    <input type="hidden" name="curso" value={{curso}}>
-                    <input type="submit" value="AGREGAR" style="background-color: red"></input>
-                </form>
                 <table rules="rows" style="width:779px;" align="center" cellspacing="0" border="1">
                         <tbody>
                             <tr style="color:White;background-color:#0B72B5;font-family:#ff9108;" valign="middle"
@@ -27,23 +22,6 @@
                                             <input type="hidden" name="curso" value={{curso}}>
                                             <input type="submit" value="VER" style="background-color: blue"></input>
                                         </form>
-
-                                        {% if i[2] == '  RECHAZADA' or i[2] == '  BORRADOR' %}
-                                            <form action="/reparar"  method="post">
-                                                <input type="hidden" name="key" value={{i[1]}}></input>
-                                                <input type="hidden" name="decreto" value={{decreto}}>
-                                                <input type="hidden" name="curso" value={{curso}}>
-                                                <input type="submit" value="Reparar" style="background-color: green"></input>
-                                            </form>
-                                        
-                                            <form action="/eliminar_secre"  method="post">
-                                                <input type="hidden" name="key" value={{i[1]}}></input>
-                                                <input type="hidden" name="decreto" value={{decreto}}>
-                                                <input type="hidden" name="curso" value={{curso}}>
-                                                <input type="submit" value="Eliminar" style="background-color: red"></input>
-                                            </form>
-                                        {% endif %}
-
                                         </td>
                                             
                                             

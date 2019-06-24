@@ -97,88 +97,13 @@
 
                                 <div id="imPageRowContent_2" class="imContentDataContainer">
                                     <div id="imGroup_2" class="imHGroup">
-                                            <h3>FICHA MATRÍCULA</h3>
+                                            <h3>MATRICULA BORRADA CORRECTAMENTE</h3>
 
-                                            <div class="container">
-                                                    <h2>IDENTIFICACÍON ESTUDIANTE DECRETO: {{decreto}} CURSO: {{curso}}</h2>
-                                              <form action="/ficha_revision" method="post">
-                                                <label for="fname">Primer Nombre </label>
-                                                <input type="text" id="fname" name="Pnombre" placeholder="Primer Nombre">
-                                                <label for="fname">Segundo Nombre </label>
-                                                <input type="text" id="fname" name="Snombre" placeholder="Segundo Nombre">
-                                                <label for="fname">Apellido Padre </label>
-                                                <input type="text" id="fname" name="apellidoP" placeholder="Apellido Padre">
-                                                <label for="fname">Apellido Madre </label>
-                                                <input type="text" id="fname" name="apellidoM" placeholder="Apellido Madre">
-                                                <label for="fname">Edad </label>
-                                                <input type="number" min="5" max="20" id="fname" name="edad" placeholder="Edad">
-                                                <label for="fname">Fecha de nacimiento </label>
-                                                <input type="date" id="fname" name="nacimientoF" placeholder="Fecha de nacimiento">
-                                                <label for="fname">Nacionalidad </label>
-                                                <input type="text" id="fname" name="nacional" placeholder="Nacionalidad">
-                                                <label for="fname">RUT Alumno (sin digito verificador)</label>
-                                                <input type="number"  id="fname" name="rut" placeholder="rut sin puntos ni digito verificador">
-                                                <label for="fname">Digito Verificador</label>
-                                                <input type="text" id="fname" name="dig" placeholder="digito verificador">
-                                                <label for="fname">Domicilio</label>
-                                                <input type="text" id="fname" name="dom" placeholder="Domicilio">
-                                                <label for="fname">Comuna</label>
-                                                <input type="text" id="fname" name="com" placeholder="Comuna">
-
-                                                    <h2>ANTECEDENTES FAMILIARES PADRE</h2>
-
-                                                <label for="fname">Nombre del padre</label>
-                                                <input type="text" id="fname" name="nombrePadre" placeholder="Nombre del padre"> 
-                                                <label for="fname">Nacionalidad</label>
-                                                <input type="text" id="fname" name="nacionalPadre" placeholder="Nacionalidad"> 
-                                                <label for="fname">RUT Padre (con digito verificador)</label>
-                                                <input type="text" id="fname" name="rutPadre" placeholder="rut sin puntos ni guion">
-                                                <label for="fname">Edad </label>
-                                                <input type="number" min="5" max="90" id="fname" name="edadPadre" placeholder="Edad">
-                                                <label for="fname">Celular </label>
-                                                <input type="text" id="fname" name="celPadre" placeholder="Celular">
-                                                <label for="fname">Correo </label>
-                                                <input type="text" id="fname" name="corPadre" placeholder="Correo">
-                                                
-                                                    <h2>ANTECEDENTES FAMILIARES MADRE</h2>
-
-                                                <label for="fname">Nombre de la Madre</label>
-                                                <input type="text" id="fname" name="nombreMadre" placeholder="Nombre del madre"> 
-                                                <label for="fname">Nacionalidad</label>
-                                                <input type="text" id="fname" name="nacionalMadre" placeholder="Nacionalidad"> 
-                                                <label for="fname">RUT Madre (con digito verificador)</label>
-                                                <input type="text" id="fname" name="rutMadre" placeholder="rut sin puntos ni guion">
-                                                <label for="fname">Edad </label>
-                                                <input type="number" min="5" max="90" id="fname" name="edadMadre" placeholder="Edad">
-                                                <label for="fname">Celular </label>
-                                                <input type="text" id="fname" name="celMadre" placeholder="Celular">
-                                                <label for="fname">Correo </label>
-                                                <input type="text" id="fname" name="corMadre" placeholder="Correo">
-
-                                                    <h2>CONTACTO EMERGENCIAS</h2>
-                                                    
-                                                <label for="fname">Antecedentes Medicos Importantes </label>
-                                                <textarea name="anteceMed" placeholder="Antecendentes Medicos importantes" rows="10" cols="30"></textarea> 
-                                                <label for="fname">Fono de emergencias </label>
-                                                <input type="text" id="fname" name="celEmerg" placeholder="Fono emergencias">
-                                                <label for="fname">Nombre Apoderado</label>
-                                                <input type="text" id="fname" name="ApodEme" placeholder="Nombre Apoderado Emergencias">
-                                                <label for="country">Servicio de Salud del Estudiante</label>
-                                                
-                                                <select id="country" name="salud">
-                                                  <option value="ISAPRE">ISAPRE</option>
-                                                  <option value="FONASA A">FONASA A</option>
-                                                  <option value="FONASA B">FONASA B</option>
-                                                  <option value="FONASA C">FONASA C</option>
-                                                </select>
-
-                                                <label for="fname">Seguro Medico</label>
-                                                <input type="text" id="fname" name="seguro" placeholder="Nombre Plan Seguro">
+                                            <form action="/lista_alumnos" method="post">
+                                                <input type="hidden" name="curso" value={{curso}}>
                                                 <input type="hidden" name="decreto" value={{decreto}}>
-                                                <input type="hidden" name="curso" value={{curso}}>                                   
-                                                <input type="submit" value="Enviar a Directora">
-                                              </form>
-                                            </div>
+                                                <input type="submit" value="volver" style="background-color: rgb(255, 123, 0)"></input>
+                                            </form>
                                        
                                     </div>
                                 </div>

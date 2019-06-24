@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-
+<h2>GESTOR DE FICHAS DE MATRÍCULAS DE LA ESCUELA</h2>
+<h3>Lista de decretos:</h3>
 <form action="/curso", method="post">  
-<input type="hidden" name="valor" value={{valor[1]}}>
+<input type="hidden" name="decreto" value={{valor[1]}}>
 <input type="submit"  value={{valor[1]}}></input>
 </form>
 
 <form action="/curso", method="post">
-<input type="hidden" name="valor" value={{valor[0]}}>
+<input type="hidden" name="decreto" value={{valor[0]}}>
 <input type="submit"  value={{valor[0]}}></input>    
 </form>
     

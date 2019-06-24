@@ -1,17 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-
-<form action="/index" , method="get">
-    <input type="submit" value="volver"></input>
-</form>
+<h2>GESTOR DE FICHAS DE MATRÍCULAS DE LA ESCUELA</h2>
+<h3>Lista de cursos del decreto {{decreto}}:</h3>
 
 
 {% for i in valor %}
 
 <form action="/lista_alumnos", method="post">  
-    <input type="hidden" name="valor" value={{i}}>
+    <input type="hidden" name="curso" value={{i}}>
+    
     <input type="submit"  value={{i}}></input>
+    <input type="hidden" name="decreto" value={{decreto}}>
     </form>
 {% endfor %}
+
+
+<form action="/index" , method="get">
+    <input type="submit" value="volver"></input>
+</form>
 
 {% endblock %}

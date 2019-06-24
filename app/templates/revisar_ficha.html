@@ -165,10 +165,19 @@
                                                 <label for="fname">Seguro Medico</label>
                                                 <input type="text" id="fname" name="seguro" placeholder={{jason["Seguro Medico"]}} disabled>
                                             
-                                                <form action="/lista_alumnos" method="post">
+                                                <form action="/aprobar" method="post">
                                                     <input type="hidden" name="curso" value={{curso}}>
                                                     <input type="hidden" name="decreto" value={{decreto}}>
-                                                    <input type="submit" value="volver" style="background-color: rgb(255, 123, 0)"></input>
+                                                    <input type="hidden" name="key" value={{key}}>
+                                                    <input type="hidden" name="eva" value="aprobado">
+                                                    <input type="submit" value="APROBAR" style="background-color: green"></input>
+                                                </form>
+                                                <form action="/aprobar" method="post">
+                                                    <input type="hidden" name="curso" value={{curso}}>
+                                                    <input type="hidden" name="decreto" value={{decreto}}>
+                                                    <input type="hidden" name="key" value={{key}}>
+                                                    <input type="hidden" name="eva" value="rechazado">
+                                                    <input type="submit" value="RECHAZAR!" style="background-color: red"></input>
                                                 </form>
 
                                             {% endblock %}

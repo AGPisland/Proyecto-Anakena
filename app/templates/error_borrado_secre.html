@@ -53,6 +53,7 @@
         <div id="imPageIntContainer">
             <div id="imHeaderBg"></div>
             <div id="imFooterBg">
+
             </div>
             <div id="imPage">
                 <header id="imHeader">
@@ -86,99 +87,28 @@
                         </div>
                     </div>
                 </header>
+
                 <div id="imContentContainer">
                     <div id="imContentGraphics"></div>
                     <main id="imContent">
                         <a id="imGoToCont"></a>
                         <div id="imGroup_1" class="imVGroup">
-
                             <div id="imPageRow_2" class="imPageRow">
+
                                 <div id="imPageRowContent_2" class="imContentDataContainer">
                                     <div id="imGroup_2" class="imHGroup">
-
-                                            <h3>FICHA MATRÍCULA</h3>
-                                            <div class="container">
-                                            {% block content %}     
-                                            <div class="container">
-                                                    <h2>IDENTIFICACÍON ESTUDIANTE DECRETO: {{decreto}} CURSO: {{curso}}</h2>
-                                                <label for="fname">Primer Nombre </label>
-                                                <input type="text" id="fname" name="Pnombre" placeholder={{jason["Primer Nombre"]}} disabled>
-                                                <label for="fname">Segundo Nombre </label>
-                                                <input type="text" id="fname" name="Snombre" placeholder={{jason["Segundo Nombre"]}} disabled>
-                                                <label for="fname">Apellido Padre </label>
-                                                <input type="text" id="fname" name="apellidoP" placeholder={{jason["Apellido Padre"]}} disabled>
-                                                <label for="fname">Apellido Madre </label>
-                                                <input type="text" id="fname" name="apellidoM" placeholder={{jason["Apellido Madre"]}} disabled>
-                                                <label for="fname">Edad </label>
-                                                <input type="number" min="5" max="20" id="fname" name="edad" placeholder={{jason["Edad"]}} disabled>
-                                                <label for="fname">Fecha de nacimiento </label>
-                                                <input type="date" id="fname" name="nacimientoF" placeholder={{jason["Fecha de nacimiento"]}} disabled>
-                                                <label for="fname">Nacionalidad </label>
-                                                <input type="text" id="fname" name="nacional" placeholder={{jason["Nacionalidad"]}} disabled>
-                                                <label for="fname">RUT Alumno (sin digito verificador)</label>
-                                                <input type="number" min="5" max="20" id="fname" name="rut" placeholder={{jason["RUT Alumno"]}} disabled>
-                                                <label for="fname">Digito Verificador</label>
-                                                <input type="text" id="fname" name="dig" placeholder={{jason["Digito Verificador"]}} disabled>
-                                                <label for|="fname">Domicilio</label>
-                                                <input type="text" id="fname" name="dom" placeholder={{jason["Domicilio"]}} disabled>
-                                                <label for="fname">Comuna</label>
-                                                <input type="text" id="fname" name="com" placeholder={{jason["Comuna"]}} disabled>
-
-                                                    <h2>ANTECEDENTES FAMILIARES PADRE</h2>
-
-                                                <label for="fname">Nombre del padre</label>
-                                                <input type="text" id="fname" name="nombrePadre" placeholder={{jason["Nombre del padre"]}} disabled>  
-                                                <label for="fname">Nacionalidad</label>
-                                                <input type="text" id="fname" name="nacionalPadre" placeholder={{jason["Nacionalidad"]}} disabled> 
-                                                <label for="fname">RUT Padre (con digito verificador)</label>
-                                                <input type="text" id="fname" name="rutPadre" placeholder={{jason["RUT Padre"]}} disabled>
-                                                <label for="fname">Edad </label>
-                                                <input type="number" min="5" max="20" id="fname" name="edadPadre" placeholder={{jason["Edad"]}} disabled>
-                                                <label for="fname">Celular </label>
-                                                <input type="text" id="fname" name="celPadre" placeholder={{jason["Celular"]}} disabled>
-                                                <label for="fname">Correo </label>
-                                                <input type="text" id="fname" name="corPadre" placeholder={{jason["Correo"]}} disabled>
-                                                
-                                                    <h2>ANTECEDENTES FAMILIARES MADRE</h2>
-
-                                                <label for="fname">Nombre de la Madre</label>
-                                                <input type="text" id="fname" name="nombreMadre" placeholder={{jason["Nombre de la Madre"]}} disabled>
-                                                <label for="fname">Nacionalidad</label>
-                                                <input type="text" id="fname" name="nacionalMadre" placeholder={{jason["Nacionalidad"]}} disabled>
-                                                <label for="fname">RUT Madre (con digito verificador)</label>
-                                                <input type="text" id="fname" name="rutMadre" placeholder={{jason["RUT Madre"]}} disabled>
-                                                <label for="fname">Edad </label>
-                                                <input type="number" min="5" max="20" id="fname" name="edadMadre" placeholder={{jason["Edad"]}} disabled>
-                                                <label for="fname">Celular </label>
-                                                <input type="text" id="fname" name="celMadre" placeholder={{jason["Celular"]}} disabled>
-                                                <label for="fname">Correo </label>
-                                                <input type="text" id="fname" name="corMadre" placeholder={{jason["Correo"]}} disabled>
-
-                                                    <h2>CONTACTO EMERGENCIAS {{curso}} {{decreto}}</h2>
-                                                    
-                                                <label for="fname">Antecedentes Medicos Importantes </label>
-                                                <textarea name="anteceMed" placeholder={{jason["Antecedentes Medicos Importantes"]}} rows="10" cols="30" disabled></textarea> 
-                                                <label for="fname">Fono de emergencias </label>
-                                                <input type="text" id="fname" name="celEmerg" placeholder={{jason["Fono de emergencias"]}}  disabled>
-                                                <label for="fname">Nombre Apoderado</label>
-                                                <input type="text" id="fname" name="ApodEme" placeholder={{jason["Nombre Apoderado"]}} disabled>
-                                                <label for="fname">Seguro Medico</label>
-                                                <input type="text" id="fname" name="seguro" placeholder={{jason["Seguro Medico"]}} disabled>
+                                            <h3>ERROR EN BORRADO DE FICHA</h3>
                                             
-                                                <form action="/lista_alumnos" method="post">
-                                                    <input type="hidden" name="curso" value={{curso}}>
-                                                    <input type="hidden" name="decreto" value={{decreto}}>
-                                                    <input type="submit" value="volver" style="background-color: rgb(255, 123, 0)"></input>
-                                                </form>
-
-                                            {% endblock %}
-
-                                            </div>
+                                            <form action="/lista_alumnos" method="post">
+                                                <input type="hidden" name="curso" value={{curso}}>
+                                                <input type="hidden" name="decreto" value={{decreto}}>
+                                                <input type="submit" value="volver" style="background-color: rgb(255, 123, 0)"></input>
+                                            </form>
                                        
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div id="imPageRow_7" class="imPageRow">
                                 <div
                                     style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden;">
@@ -229,6 +159,8 @@
                                 </div>
                             </div>
                         </div>
+
+
                 </div>
                 <div class="imClear"></div>
                 </main>
