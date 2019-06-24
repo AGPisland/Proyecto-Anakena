@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Email
 
 class LoginForm( FlaskForm ):
-    username = StringField(  "Usuario" , validators = [ DataRequired() ] )
+    email = StringField( "email" , validators = [ DataRequired() , Email()])
     password = PasswordField( "Contraseña" , validators = [ DataRequired() ] )
     remember_me = BooleanField( "Recuerdame" )
     submit = SubmitField( "Ingresar" )
