@@ -1,8 +1,15 @@
 import json
 from psycopg2.extras import Json
-from app import app
 from flask import render_template, request, redirect, session, Flask, url_for, escape
 import psycopg2
+from app import app, login_manager
+from app.forms import LoginForm, SignUpForm
+from flask_login import current_user, login_user, logout_user
+from app.models import users, User, get_user
+from flask_login import login_required
+from werkzeug.urls import url_parse
+
+
 conn = psycopg2.connect("dbname=%s user=%s password=%s" %
                         ('anakena', 'alonsogjp', 'Alon'))
 
@@ -11,7 +18,6 @@ cur = conn.cursor()
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
-@app.route('/')
 @app.route('/index')
 def index():
     if 'rol' in session:
@@ -29,7 +35,7 @@ def index():
         print(data)
         return render_template("index.html",valor=data)
 
-    return 'You are not logged in'
+    return redirect(url_for('logout')) 
 
 @app.route('/curso', methods=['GET', 'POST'])
 def curso():
@@ -269,27 +275,7 @@ def termianardict():
 
 roles=['directora', 'secretaria', 'profesora']
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST': 
-        role=request.form['username']
-        if role in roles:
-            session['rol'] = role
-            return redirect(url_for('index'))
-        
 
-    return '''
-        <form method="post">
-            <p><input type=text name=username>
-            <p><input type=submit value=Login>
-        </form>
-    '''
-
-@app.route('/logout')
-def logout():
-    # remove the username from the session if it's there
-    session.pop('rol', None)
-    return redirect(url_for('index')) 
 
 
 @app.route('/revisar', methods=['GET', 'POST'])
@@ -332,4 +318,79 @@ def aprobardirectora():
                 cur.execute(sql)
                 conn.commit()
                 return render_template("rechazado.html", curso=curso, decreto=decreto)
+
+
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect( url_for( "login" ) )
+
+
+
+
+@app.route( "/"  )
+@app.route( "/login" , methods = [ 'GET' , 'POST' ] )
+def login():
+    print('login:=')
+    if current_user.is_authenticated :
+        print('lo=')
+        return redirect( url_for( 'index' ) )
+
+    form = LoginForm() 
+    if form.validate_on_submit():
+        print('lo=asd')
+        user = get_user( form.email.data )
+        password = form.password.data  
+
+        if user is not None and user.check_password(password):
+            print('lsadasdo=')
+            login_user( user, remember = form.remember_me.data )
+            next_page = request.args.get( "next" )
+
+            if not next_page or url_parse( next_page ).netloc != "" :
+                next_page = url_for( "index" )
+        
+            return redirect(next_page)
+
+    return render_template ( "login.html" , title = "Ingreso", form = form )
+
+@app.route("/signup", methods = [ 'GET', 'POST' ] )
+def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+        
+    form = SignUpForm()
+    if form.validate_on_submit():
+
+        email = form.email.data
+        password = form.password.data
+        rol = form.rol.data
+
+        # Creamos el usuario y lo guardamos
+        user = User(len(users) + 1, email, password, rol)
+        print (user)
+        users.append(user)
+        print (users)
+        session['rol'] = rol
+        # Dejamos al usuario logueado
+        login_user(user, remember=True)
+        next_page = request.args.get('next', None)
+
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('index')
+
+        return redirect(next_page)
+
+    return render_template("signup.html", form=form)
+
+@login_manager.user_loader
+def load_user( user_id ) :
+    for user in users:
+        if user.id == int ( user_id ) :
+            return user
+        
+    return None
+    
+
 
