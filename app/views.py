@@ -11,7 +11,7 @@ from werkzeug.urls import url_parse
 
 
 conn = psycopg2.connect("dbname=%s user=%s password=%s" %
-                        ('anakena', 'alonsogjp', 'Alon'))
+                        ('anakena', 'Alon', 'Alon'))
 
 cur = conn.cursor()
 
@@ -278,6 +278,7 @@ roles=['directora', 'secretaria', 'profesora']
 
 
 
+
 @app.route('/revisar', methods=['GET', 'POST'])
 def revisardirectora():
     print('ACA!!! revisar directora')
@@ -392,5 +393,6 @@ def load_user( user_id ) :
         
     return None
     
+
 
 
